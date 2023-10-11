@@ -17,3 +17,14 @@ def classify_image(image):
 # img = Image.open("path_to_image.jpg")
 predicted_label = classify_image(img)
 print(f"Predicted class label: {predicted_label}")
+
+
+
+{
+  "label": "Image Classification",
+  "type": "image",
+  "image": {
+    "image_url": "$image"
+  },
+  "predict": "http://localhost:5000/predict"  # Update with your ML backend URL
+}
