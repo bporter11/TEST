@@ -32,3 +32,26 @@ class MyModel(LabelStudioMLBase):
             output_predictions.append(output)
 
         return output_predictions
+
+
+
+def classify_image(image):
+    img = Image.open(io.BytesIO(base64.b64decode(image))
+    img = preprocess(img)
+    img = img.unsqueeze(0)  # Add batch dimension
+    with torch.no_grad():
+        output = model(img)
+
+    # Get the top predicted class and probability
+    _, predicted_class = torch.max(output, 1)
+    confidence = torch.nn.functional.softmax(output, dim=1)[0] * 100
+
+    # Print the predicted class label and confidence
+    predicted_label = class_labels[predicted_class.item()]
+    print(f"Predicted class label: {predicted_label}")
+    print(f"Confidence: {confidence[predicted_class.item()]:.2f}%")
+
+# Example usage:
+# Assuming you have image data in base64 format
+base64_image_data = "your_base64_encoded_image_data_here"
+classify_image(base64_image_data)
