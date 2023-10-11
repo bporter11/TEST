@@ -1,0 +1,19 @@
+def classify_image(image):
+    img = preprocess(image)
+    img = img.unsqueeze(0)  # Add batch dimension
+    with torch.no_grad():
+        output = model(img)
+
+    # Get the top predicted class and probability
+    _, predicted_class = torch.max(output, 1)
+
+    # Print the predicted class label
+    predicted_label = class_labels[predicted_class.item()]
+
+    return predicted_label
+
+# Example usage:
+# Assuming you have a PIL Image object named 'img' or use Image.open to load an image
+# img = Image.open("path_to_image.jpg")
+predicted_label = classify_image(img)
+print(f"Predicted class label: {predicted_label}")
