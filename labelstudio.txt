@@ -1,23 +1,17 @@
-import os
-import json
-import label_studio_sdk
-from label_studio_ml.model import LabelStudioMLBase
-
-LABEL_STUDIO_HOST = os.getenv('LABEL_STUDIO_HOST', 'http://localhost:8080')
-LABEL_STUDIO_API_KEY = os.getenv('LABEL_STUDIO_API_KEY', 'your-label-studio-api-key')
-
-
 class MyModel(LabelStudioMLBase):
     def predict(self, tasks, **kwargs):
         output_predictions = []
 
         for task in tasks:
-            # Assuming there's an 'image_url' field in your Label Studio task data
-            image_url = task.get('data', {}).get('image_url')
+            # Assuming there's an 'image' field in your Label Studio task data
+            image_data = task.get('data', {}).get('image')
 
-            if image_url:
+            if image_data:
+                # Convert the base64 image data to a PIL Image
+                img = Image.open(io.BytesIO(base64.b64decode(image_data))
+
                 # Use your image classification function to get the predicted label
-                predicted_label = classify_image(image_url)
+                predicted_label = classify_image(img)
 
                 # Create a Label Studio-compatible output format
                 output = {
@@ -27,7 +21,7 @@ class MyModel(LabelStudioMLBase):
                     'score': 1.0,  # You can adjust this score as needed
                 }
             else:
-                # Handle cases where no image URL is provided
+                # Handle cases where no image data is provided
                 output = {
                     'result': {
                         'predictions': [],
