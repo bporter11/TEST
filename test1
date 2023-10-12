@@ -28,3 +28,7 @@ print(f"Predicted class label: {predicted_label}")
   },
   "predict": "http://localhost:5000/predict"  # Update with your ML backend URL
 }
+
+base_directory = '/home/GOLDlnk/brian.porter2/.local/share/label-studio'
+
+full_image_path = os.path.join(base_directory, image_path.replace("data/", "media/"))
