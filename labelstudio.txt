@@ -1,57 +1,25 @@
-class MyModel(LabelStudioMLBase):
-    def predict(self, tasks, **kwargs):
-        output_predictions = []
+cfrom confluent_kafka import Producer
+import json
 
-        for task in tasks:
-            # Assuming there's an 'image' field in your Label Studio task data
-            image_data = task.get('data', {}).get('image')
+class KafkaProducer:
+    def __init__(self, bootstrap_servers, topic):
+        self.producer = Producer({
+            'bootstrap.servers': bootstrap_servers
+        })
+        self.topic = topic
 
-            if image_data:
-                # Convert the base64 image data to a PIL Image
-                img = Image.open(io.BytesIO(base64.b64decode(image_data))
+    def delivery_report(self, err, msg):
+        if err is not None:
+            print('Message delivery failed: {}'.format(err))
+        else:
+            print('Message delivered to {} [{}]'.format(msg.topic(), msg.partition()))
 
-                # Use your image classification function to get the predicted label
-                predicted_label = classify_image(img)
+    def produce_message(self, key, value):
+        # Produce a message to the specified topic
+        self.producer.produce(self.topic, key=key, value=value, callback=self.delivery_report)
+        self.producer.poll(0)  # Trigger the delivery report callback
 
-                # Create a Label Studio-compatible output format
-                output = {
-                    'result': {
-                        'predictions': [{'label': predicted_label}],
-                    },
-                    'score': 1.0,  # You can adjust this score as needed
-                }
-            else:
-                # Handle cases where no image data is provided
-                output = {
-                    'result': {
-                        'predictions': [],
-                    },
-                    'score': 0.0,
-                }
-
-            output_predictions.append(output)
-
-        return output_predictions
+    def close(self):
+        self.producer.flush()
 
 
-
-def classify_image(image):
-    img = Image.open(io.BytesIO(base64.b64decode(image))
-    img = preprocess(img)
-    img = img.unsqueeze(0)  # Add batch dimension
-    with torch.no_grad():
-        output = model(img)
-
-    # Get the top predicted class and probability
-    _, predicted_class = torch.max(output, 1)
-    confidence = torch.nn.functional.softmax(output, dim=1)[0] * 100
-
-    # Print the predicted class label and confidence
-    predicted_label = class_labels[predicted_class.item()]
-    print(f"Predicted class label: {predicted_label}")
-    print(f"Confidence: {confidence[predicted_class.item()]:.2f}%")
-
-# Example usage:
-# Assuming you have image data in base64 format
-base64_image_data = "your_base64_encoded_image_data_here"
-classify_image(base64_image_data)
