@@ -1,0 +1,53 @@
+import time
+import json
+import csv
+from confluent_kafka import Producer
+
+class KafkaMessageProducer:
+    def __init__(self, bootstrap_servers, topic_name, file_path):
+        self.bootstrap_servers = bootstrap_servers
+        self.topic_name = topic_name
+        self.file_path = file_path
+        self.producer = Producer({'bootstrap.servers': self.bootstrap_servers})
+
+    def read_messages_from_file(self):
+        messages = []
+        if self.file_path.endswith(".json"):
+            with open(self.file_path, 'r') as json_file:
+                messages = json.load(json_file)
+        elif self.file_path.endswith(".csv"):
+            with open(self.file_path, 'r') as csv_file:
+                csv_reader = csv.DictReader(csv_file)
+                for row in csv_reader:
+                    messages.append(row)
+        return messages
+
+    def produce_messages(self, num_messages=10, interval=4):
+        messages = self.read_messages_from_file()
+        if not messages:
+            print("No messages to send.")
+            return
+
+        message_count = 0
+        for message in messages:
+            if message_count >= num_messages:
+                break
+
+            value = json.dumps(message)
+            self.producer.produce(self.topic_name, key=str(message_count), value=value)
+            print(f"Produced message {message_count}: {value}")
+
+            message_count += 1
+            time.sleep(interval)
+
+        self.producer.flush()
+
+if __name__ == "__main__":
+    # Replace with your Kafka broker(s) address, topic name, and file path (CSV or JSON)
+    kafka_bootstrap_servers = 'localhost:9092'
+    kafka_topic_name = 'your_topic_name'
+    data_file_path = 'path_to_your_file.csv'  # Replace with the path to your file
+
+    # Create a KafkaMessageProducer instance and start producing messages
+    message_producer = KafkaMessageProducer(kafka_bootstrap_servers, kafka_topic_name, data_file_path)
+    message_producer.produce_messages()
