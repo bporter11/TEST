@@ -50,3 +50,15 @@
     "location": "Phoenix"
   },
 ]
+
+
+
+{
+  "mappings": {
+    "properties": {
+      "name": { "type": "text" },
+      "age": { "type": "integer" },
+      "location": { "type": "text" }
+    }
+  }
+}
