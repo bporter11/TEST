@@ -1,0 +1,18 @@
+from elasticsearch import Elasticsearch
+
+# Initialize the Elasticsearch client
+es = Elasticsearch([{'host': 'localhost', 'port': 9200}])  # Replace with your Elasticsearch server information
+
+# Replace 'your_index_name' with the name of your index
+index_name = 'your_index_name'
+
+# Search for the last document in the index
+response = es.search(index=index_name, body={"query": {"match_all": {}}, "size": 1, "sort": [{"@timestamp": {"order": "desc"}}})
+
+# Check if there are any documents
+if response['hits']['total']['value'] > 0:
+    # Get the last document
+    last_document = response['hits']['hits'][0]
+    print(last_document)
+else:
+    print("No documents found in the index")
