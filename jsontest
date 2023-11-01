@@ -65,3 +65,13 @@ try:
     print("Gold data is valid.")
 except AssertionError as e:
     print("Error validating gold data:", e)
+
+
+try:
+    with open("produced_message.json", "r") as file:
+        message = file.read()
+        validated_data = validate_json(message)
+        validate_consumed_data(validated_data)
+        print("Consumed data is valid.")
+except (AssertionError, FileNotFoundError) as e:
+    print("Error validating consumed data:", e)
