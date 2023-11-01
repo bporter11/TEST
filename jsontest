@@ -1,0 +1,67 @@
+import json
+
+def validate_json(message):
+    try:
+        data = json.loads(message)
+        assert isinstance(data, dict), "Invalid JSON format."
+    except json.JSONDecodeError:
+        assert False, "Invalid JSON format."
+    return data
+
+def validate_consumed_data(data):
+    assert all(field in data for field in ["mmsi", "is_fishing", "label", "sublabel", "length", "tonnage", "list_sources", "with_ranges"]), "Missing fields in the consumed data."
+    return True
+
+def validate_unprocessed_data(data):
+    return validate_consumed_data(data)
+
+def validate_bronze_data(data):
+    return validate_consumed_data(data)
+
+def validate_silver_data(data):
+    return validate_consumed_data(data)
+
+def validate_gold_data(data):
+    return validate_consumed_data(data)
+
+message = '''{
+    "mmsi": 611,
+    "is_fishing": "fishing",
+    "label": "fixed gear",
+    "sublabel": "set gearnets",
+    "length": "11.80",
+    "tonnage": "24.43",
+    "list_sources": "eu_fishing",
+    "with_ranges": "false"
+}'''
+
+try:
+    validated_data = validate_json(message)
+    validate_consumed_data(validated_data)
+    print("Consumed data is valid.")
+except AssertionError as e:
+    print("Error validating consumed data:", e)
+
+try:
+    validate_unprocessed_data(validated_data)
+    print("Unprocessed data is valid.")
+except AssertionError as e:
+    print("Error validating unprocessed data:", e)
+
+try:
+    validate_bronze_data(validated_data)
+    print("Bronze data is valid.")
+except AssertionError as e:
+    print("Error validating bronze data:", e)
+
+try:
+    validate_silver_data(validated_data)
+    print("Silver data is valid.")
+except AssertionError as e:
+    print("Error validating silver data:", e)
+
+try:
+    validate_gold_data(validated_data)
+    print("Gold data is valid.")
+except AssertionError as e:
+    print("Error validating gold data:", e)
