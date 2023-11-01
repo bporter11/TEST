@@ -218,3 +218,28 @@ try:
     print("Gold data is valid.")
 except AssertionError as e:
     print("Validation error:", e)
+
+
+from elasticsearch import Elasticsearch
+from elasticsearch.exceptions import ConnectionError
+
+# Elasticsearch connection details
+elasticsearch_config = {
+    'host': 'localhost',  # Replace with your Elasticsearch host
+    'port': 9200,  # Replace with your Elasticsearch port
+}
+
+# Function to test Elasticsearch connection
+def test_elasticsearch_connection(elasticsearch_config):
+    try:
+        es = Elasticsearch([elasticsearch_config])
+        if es.ping():
+            print("Elasticsearch connection successful. Test passed.")
+        else:
+            print("Elasticsearch ping check failed. Test failed.")
+    except ConnectionError as e:
+        print(f"Elasticsearch connection failed. Test failed: {str(e)}")
+
+# Run the Elasticsearch connection test
+test_elasticsearch_connection(elasticsearch_config)
+
