@@ -140,4 +140,29 @@ except AssertionError as e:
 
 
 
+from confluent_kafka import Consumer, KafkaError
+
+# Define Kafka configuration with the correct broker details
+kafka_config = {
+    'bootstrap.servers': 'localhost:9092',  # Replace with your Kafka broker(s)
+    'group.id': 'test-group',
+    'auto.offset.reset': 'earliest',
+}
+
+# Kafka topic that is already producing messages
+existing_topic = 'your-existing-topic'
+
+# Function to test Kafka consumer connection to the topic
+def test_kafka_consumer_connection(kafka_config, topic):
+    try:
+        consumer = Consumer(kafka_config)
+        consumer.subscribe([topic])
+
+        print(f"Kafka consumer connected to topic '{topic}' successfully.")
+
+    except Exception as e:
+        print(f"Kafka consumer connection to topic '{topic}' failed. Test failed: {str(e)}")
+
+# Run the Kafka consumer connection test
+test_kafka_consumer_connection(kafka_config, existing_topic)
 
