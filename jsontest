@@ -75,3 +75,69 @@ try:
         print("Consumed data is valid.")
 except (AssertionError, FileNotFoundError) as e:
     print("Error validating consumed data:", e)
+
+
+
+
+
+
+
+
+
+
+
+
+import json
+
+def load_expected_data(file_path):
+    try:
+        with open(file_path, "r") as file:
+            return json.load(file)
+    except (FileNotFoundError, json.JSONDecodeError):
+        return None
+
+def validate_json(data, expected_data):
+    assert expected_data, "Expected data is missing or invalid."
+    assert data == expected_data, "Data does not match the expected result."
+
+def validate_consumed_data(data, expected_data):
+    # Assuming expected data is the same for consumed and unprocessed tiers
+    validate_json(data, expected_data)
+
+def validate_unprocessed_data(data, expected_data):
+    validate_json(data, expected_data)
+
+def validate_bronze_data(data, expected_data):
+    validate_json(data, expected_data)
+
+def validate_silver_data(data, expected_data):
+    validate_json(data, expected_data)
+
+def validate_gold_data(data, expected_data):
+    validate_json(data, expected_data)
+
+# Load expected data from JSON files
+expected_unprocessed_data = load_expected_data("unprocessed.json")
+expected_bronze_data = load_expected_data("bronze.json")
+expected_silver_data = load_expected_data("silver.json")
+expected_gold_data = load_expected_data("gold.json")
+
+try:
+    with open("produced_message.json", "r") as file:
+        message = file.read()
+        validated_data = validate_json(message, expected_unprocessed_data)
+        print("Consumed data is valid.")
+    validate_unprocessed_data(validated_data, expected_bronze_data)
+    print("Unprocessed data is valid.")
+    validate_bronze_data(validated_data, expected_silver_data)
+    print("Bronze data is valid.")
+    validate_silver_data(validated_data, expected_gold_data)
+    print("Silver data is valid.")
+    validate_gold_data(validated_data, expected_gold_data)
+    print("Gold data is valid.")
+except AssertionError as e:
+    print("Validation error:", e)
+
+
+
+
