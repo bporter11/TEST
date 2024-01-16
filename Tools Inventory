@@ -95,3 +95,8 @@ except FileNotFoundError:
     matched_rows[['Order Number', 'Description', 'Combined Descriptions']].to_excel(file_path, sheet_name='Sheet2', index=False)
 
     print("File created with 'Sheet2' and data written:", file_path)
+
+-----------
+import textwrap
+# Format the 'Combined Descriptions' column with line breaks every 75 characters
+matched_rows['Formatted Descriptions'] = matched_rows['Combined Descriptions'].apply(lambda x: '\n'.join(textwrap.wrap(x, width=75)))
