@@ -22,3 +22,13 @@ matched_rows = filtered_df[filtered_df['Order Number'].isin(finance_df['PO/SR'])
 
 # Display the resulting DataFrame
 print(matched_rows)
+
+
+
+matched_rows['Combined Descriptions'] = matched_rows['Description'] + " " + finance_df['Item Description / Projects Batch']
+
+# Print the count of matching rows
+print("Number of matches:", len(matched_rows))
+
+# Display the resulting DataFrame
+print(matched_rows[['Order Number', 'Description', 'Combined Descriptions']])
