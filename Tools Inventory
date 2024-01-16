@@ -109,3 +109,7 @@ matched_rows[['Item', 'Description']] = matched_rows['Combined Descriptions'].st
 
 # Format the 'Description' column with line breaks every 75 characters
 matched_rows['Formatted Descriptions'] = matched_rows['Description'].apply(lambda x: '\n'.join(textwrap.wrap(x, width=75)))
+
+
+pattern = r'^(.*?)(\d{1,2}/\d{1,2}/\d{2,4}|$)'
+matched_rows[['Item', 'Description']] = matched_rows['Combined Descriptions'].str.extract(pattern)
