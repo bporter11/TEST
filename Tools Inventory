@@ -1,0 +1,27 @@
+Tools inventory Excel Parser
+-----------------
+
+
+
+import pandas as pd
+from IPython.display import display
+from ipywidgets import FileUpload
+
+# Create a file upload widget
+upload_widget = FileUpload()
+
+# Display the widget
+display(upload_widget)
+
+# Wait for the user to upload a file
+while not upload_widget.value:
+    pass
+
+# Get the uploaded file
+uploaded_file = upload_widget.value[list(upload_widget.value.keys())[0]]['content']
+
+# Read the Excel file into a Pandas DataFrame
+df = pd.read_excel(pd.BytesIO(uploaded_file))
+
+# Display the DataFrame
+df
