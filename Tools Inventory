@@ -58,3 +58,40 @@ with pd.ExcelWriter(file_path, engine='openpyxl', mode='a') as writer:
     matched_rows[['Order Number', 'Description', 'Combined Descriptions']].to_excel(writer, sheet_name='Sheet2', index=False)
 
 print("Data appended to Excel file:", file_path)
+
+
+
+----------------------
+import pandas as pd
+from openpyxl import load_workbook
+
+# ... (Assume df, pattern, filtered_df, and finance_df are defined as in the previous examples)
+
+# Create a new column 'Combined Descriptions' by combining 'Description' and 'Item Description / Projects Batch'
+matched_rows['Combined Descriptions'] = matched_rows['Description'] + " " + finance_df['Item Description / Projects Batch']
+
+# Define the file path
+file_path = r'C:\Users\brian.porter2\Documents\TOOLS\Tools_Inventory_CLEANED.xlsx'
+
+# Load the existing workbook
+try:
+    with pd.ExcelWriter(file_path, engine='openpyxl') as writer:
+        # Try to open an existing workbook
+        writer.book = load_workbook(file_path)
+
+        # Check if 'Sheet2' exists
+        if 'Sheet2' in writer.book.sheetnames:
+            # Append the DataFrame to the existing 'Sheet2'
+            matched_rows[['Order Number', 'Description', 'Combined Descriptions']].to_excel(writer, sheet_name='Sheet2', index=False)
+
+        else:
+            # If 'Sheet2' does not exist, create it and write the DataFrame
+            matched_rows[['Order Number', 'Description', 'Combined Descriptions']].to_excel(writer, sheet_name='Sheet2', index=False)
+
+    print("Data appended to/created 'Sheet2' in Excel file:", file_path)
+
+except FileNotFoundError:
+    # If the file does not exist, create it with 'Sheet2' and write the DataFrame
+    matched_rows[['Order Number', 'Description', 'Combined Descriptions']].to_excel(file_path, sheet_name='Sheet2', index=False)
+
+    print("File created with 'Sheet2' and data written:", file_path)
