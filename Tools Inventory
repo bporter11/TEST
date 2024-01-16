@@ -3,25 +3,22 @@ Tools inventory Excel Parser
 
 
 
-import pandas as pd
-from IPython.display import display
-from ipywidgets import FileUpload
+# Assume df is your DataFrame with the 'Order Number' column
+data = {'Order Number': ['EC-123456', 'EC-789012', 'canceled', 'EC-345678', 'other']}
+df = pd.DataFrame(data)
 
-# Create a file upload widget
-upload_widget = FileUpload()
+# Define a regular expression pattern for the desired format
+pattern = r'^EC-\d{6}$'
 
-# Display the widget
-display(upload_widget)
+# Use str.contains to filter rows based on the pattern
+filtered_df = df[df['Order Number'].str.contains(pattern, na=False)]
 
-# Wait for the user to upload a file
-while not upload_widget.value:
-    pass
+# Assume finance_df is your other DataFrame with the 'PO/SR' column
+finance_data = {'PO/SR': ['EC-123456', 'SA-789012', 'canceled', 'EC-345678', 'other']}
+finance_df = pd.DataFrame(finance_data)
 
-# Get the uploaded file content
-uploaded_file = next(iter(upload_widget.value.values()))['content']
+# Check if elements in the 'Order Number' column of filtered_df match any elements in 'PO/SR' column of finance_df
+matched_rows = filtered_df[filtered_df['Order Number'].isin(finance_df['PO/SR'])]
 
-# Read the Excel file into a Pandas DataFrame
-df = pd.read_excel(pd.BytesIO(uploaded_file))
-
-# Display the DataFrame
-df
+# Display the resulting DataFrame
+print(matched_rows)
