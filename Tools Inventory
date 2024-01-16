@@ -32,3 +32,11 @@ print("Number of matches:", len(matched_rows))
 
 # Display the resulting DataFrame
 print(matched_rows[['Order Number', 'Description', 'Combined Descriptions']])
+
+
+file_path = r'C:\Users\brian.porter2\Documents\TOOLS\Tools_Inventory_CLEANED.xlsx'
+
+# Save the DataFrame to the specified Excel file and sheet
+matched_rows[['Order Number', 'Description', 'Combined Descriptions']].to_excel(file_path, sheet_name='Sheet2', index=False)
+
+print("Data saved to Excel file:", file_path)
