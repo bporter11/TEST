@@ -100,3 +100,12 @@ except FileNotFoundError:
 import textwrap
 # Format the 'Combined Descriptions' column with line breaks every 75 characters
 matched_rows['Formatted Descriptions'] = matched_rows['Combined Descriptions'].apply(lambda x: '\n'.join(textwrap.wrap(x, width=75)))
+
+---------------------------
+matched_rows['Combined Descriptions'] = matched_rows['Description'] + " " + finance_df['Item Description / Projects Batch']
+
+# Split 'Combined Descriptions' into 'Item' and 'Description' based on the first space
+matched_rows[['Item', 'Description']] = matched_rows['Combined Descriptions'].str.split(n=1, expand=True)
+
+# Format the 'Description' column with line breaks every 75 characters
+matched_rows['Formatted Descriptions'] = matched_rows['Description'].apply(lambda x: '\n'.join(textwrap.wrap(x, width=75)))
