@@ -113,3 +113,16 @@ matched_rows['Formatted Descriptions'] = matched_rows['Description'].apply(lambd
 
 pattern = r'^(.*?(\d{1,2}/\d{1,2}/\d{2,4}|$))'
 matched_rows[['Item', 'Description']] = matched_rows['Combined Descriptions'].str.extract(pattern)
+
+------------------------
+# Assuming 'Amount', 'Dept', 'Supplier' are columns in the 'finance_df' DataFrame
+finance_columns_to_extract = ['Amount', 'Dept', 'Supplier']
+
+# Extract the specified columns from the 'finance_df' DataFrame for the rows in 'matched_rows'
+finance_extracted_columns_df = finance_df.loc[finance_df['PO/SR'].isin(matched_rows['Order Number']), finance_columns_to_extract]
+
+# Merge the extracted columns from 'finance_df' into 'matched_rows' based on the 'Order Number'
+matched_rows = pd.merge(matched_rows, finance_extracted_columns_df, left_on='Order Number', right_on='PO/SR', how='left')
+
+# Drop the duplicate 'PO/SR' column introduced by the merge
+matched_rows = matched_rows.drop('PO/SR', axis=1)
