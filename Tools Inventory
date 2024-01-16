@@ -17,8 +17,8 @@ display(upload_widget)
 while not upload_widget.value:
     pass
 
-# Get the uploaded file
-uploaded_file = upload_widget.value[list(upload_widget.value.keys())[0]]['content']
+# Get the uploaded file content
+uploaded_file = next(iter(upload_widget.value.values()))['content']
 
 # Read the Excel file into a Pandas DataFrame
 df = pd.read_excel(pd.BytesIO(uploaded_file))
