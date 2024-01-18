@@ -126,3 +126,26 @@ matched_rows = pd.merge(matched_rows, finance_extracted_columns_df, left_on='Ord
 
 # Drop the duplicate 'PO/SR' column introduced by the merge
 matched_rows = matched_rows.drop('PO/SR', axis=1)
+------------------------------------------------------------------------------------------------------------------------------------------------
+01/18/24
+import pandas as pd
+
+# Assuming df1 and df2 are your two DataFrames
+df1 = pd.DataFrame({'ID': [1, 2, 3], 'Description': ['Desc1', 'Desc2', 'Desc3']})
+df2 = pd.DataFrame({'ID': [1, 2, 3], 'Item Description': ['ItemDesc1', 'ItemDesc2', 'ItemDesc3']})
+
+# Merge on the 'ID' column
+merged_df = pd.merge(df1, df2, left_on='ID', right_on='ID')
+
+# Create a new column 'Combined Descriptions'
+merged_df['Combined Descriptions'] = merged_df['Description'] + ' ' + merged_df['Item Description']
+
+# Drop the original columns if you don't need them anymore
+merged_df = merged_df.drop(['Description', 'Item Description'], axis=1)
+
+# Resulting DataFrame will have a new column 'Combined Descriptions'
+print(merged_df)
+------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
