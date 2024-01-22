@@ -148,6 +148,55 @@ print(merged_df)
 
 df.rename(columns={'OldColumnName': 'NewColumnName'}, inplace=True)
 ------------------------------------------------------------------------------------------------------------------------------------------------
+import pandas as pd
+from ipywidgets import FileUpload
+import io
+
+# Create a FileUpload widget
+file_upload = FileUpload()
+
+# Display the widget
+display(file_upload)
+
+def handle_upload(change):
+    uploaded_file = next(iter(file_upload.value))
+    
+    # Read the uploaded file into a Pandas DataFrame
+    content = file_upload.value[uploaded_file]['content']
+    df = pd.read_excel(io.BytesIO(content))
+    
+    # Do further processing with the DataFrame (e.g., display it, analyze it, etc.)
+    display(df)
+
+# Attach the handler function to the upload widget
+file_upload.observe(handle_upload, names='_counter')
 
 
 
+
+------------------------------------------------------------------------------------------------------------------------------------------------
+import pandas as pd
+from ipywidgets import FileUpload
+import io
+
+# Create a FileUpload widget
+file_upload = FileUpload()
+
+# Display the widget
+display(file_upload)
+
+def handle_upload(change):
+    uploaded_file = next(iter(file_upload.value))
+    
+    # Read the uploaded file into a Pandas DataFrame
+    content = file_upload.value[uploaded_file]['content']
+    df = pd.read_excel(io.BytesIO(content))
+    
+    # Do further processing with the DataFrame (e.g., display it, analyze it, etc.)
+    display(df)
+
+# Attach the handler function to the upload widget
+file_upload.observe(handle_upload, names='_counter')
+
+pip install ipywidgets pandas
+jupyter nbextension enable --py widgetsnbextension
