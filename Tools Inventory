@@ -242,49 +242,37 @@ process_button.on_click(process_file)
 display(file_upload)
 display(process_button)
 ------------------------------------------------------------------------------------------------------------------------------------------------
-import pandas as pd
 import ipywidgets as widgets
-from IPython.display import display, display_html
+from IPython.display import display
 import io
+import pandas as pd
 
-class FileUploader:
-    def __init__(self):
-        self.file_upload_widget = widgets.FileUpload()
-        self.process_button = widgets.Button(description="Process File")
+# Cell 1: Widget for file upload
+uploader = widgets.FileUpload(
+    accept='*.csv',  # Accepted file extension, e.g., '.txt', '.pdf', 'image/*', 'image/*,.pdf'
+    multiple=False  # True to accept multiple files upload else False
+)
 
-        # Default empty DataFrame
-        self.df = pd.DataFrame()
+display(uploader)
 
-        # Attach the handler functions
-        self.file_upload_widget.observe(self.handle_upload, names='_counter')
-        self.process_button.on_click(self.process_file)
+# Cell 2: File processing
+def process_uploaded_file(change):
+    input_file = list(uploader.value.values())[0]
+    
+    # Check if a file is uploaded
+    if input_file:
+        content = input_file['content']
+        content = io.StringIO(content.decode('utf-8'))
+        df = pd.read_csv(content)
+        
+        # Display the DataFrame
+        display(df)
+    else:
+        print("Please upload a file before processing.")
 
-        # Display widgets
-        display(self.file_upload_widget)
-        display(self.process_button)
+# Attach the handler function to the upload widget
+uploader.observe(process_uploaded_file, names='_counter')
 
-    def handle_upload(self, change):
-        uploaded_file = self.file_upload_widget.value
-
-        # Check if a file is uploaded
-        if uploaded_file:
-            # Read the uploaded file into a Pandas DataFrame
-            content = uploaded_file[list(uploaded_file.keys())[0]]['content']
-            # Update the global df variable
-            self.df = pd.read_excel(io.BytesIO(content))
-
-            # Display information about the uploaded file
-            display_html(f'File "{list(uploaded_file.keys())[0]}" uploaded successfully.', raw=True)
-
-    def process_file(self, button):
-        if not self.df.empty:
-            # Display the DataFrame
-            display(self.df)
-        else:
-            print("Please upload a file before processing.")
-
-# Create an instance of FileUploader
-file_uploader = FileUploader()
 
 
 
