@@ -203,7 +203,7 @@ jupyter nbextension enable --py widgetsnbextension
 ------------------------------------------------------------------------------------------------------------------------------------------------
 import pandas as pd
 import ipywidgets as widgets
-from IPython.display import display
+from IPython.display import display, display_html
 import io
 
 # Create a FileUpload widget
@@ -219,12 +219,14 @@ def handle_upload(change):
     if uploaded_file:
         # Read the uploaded file into a Pandas DataFrame
         content = uploaded_file[list(uploaded_file.keys())[0]]['content']
+        global df
         df = pd.read_excel(io.BytesIO(content))
         
-        # Do further processing with the DataFrame (e.g., display it, analyze it, etc.)
-        display(df)
+        # Display information about the uploaded file
+        display_html(f'File "{list(uploaded_file.keys())[0]}" uploaded successfully.', raw=True)
 
 # Attach the handler function to the upload widget
 file_upload.observe(handle_upload, names='_counter')
+
 
 
