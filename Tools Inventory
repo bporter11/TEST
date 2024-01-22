@@ -247,37 +247,45 @@ import ipywidgets as widgets
 from IPython.display import display, display_html
 import io
 
-# Default empty DataFrame
-df = pd.DataFrame()
+class FileUploader:
+    def __init__(self):
+        self.file_upload_widget = widgets.FileUpload()
+        self.process_button = widgets.Button(description="Process File")
 
-# Create a function to handle file upload and processing
-def handle_upload_and_process(change):
-    uploaded_file = file_upload_widget.value
+        # Default empty DataFrame
+        self.df = pd.DataFrame()
 
-    # Check if a file is uploaded
-    if uploaded_file:
-        # Read the uploaded file into a Pandas DataFrame
-        content = uploaded_file[list(uploaded_file.keys())[0]]['content']
-        # Update the global df variable
-        global df
-        df = pd.read_excel(io.BytesIO(content))
+        # Attach the handler functions
+        self.file_upload_widget.observe(self.handle_upload, names='_counter')
+        self.process_button.on_click(self.process_file)
 
-        # Display information about the uploaded file
-        display_html(f'File "{list(uploaded_file.keys())[0]}" uploaded successfully.', raw=True)
+        # Display widgets
+        display(self.file_upload_widget)
+        display(self.process_button)
 
-        # Display the DataFrame
-        display(df)
-    else:
-        print("Please upload a file before processing.")
+    def handle_upload(self, change):
+        uploaded_file = self.file_upload_widget.value
 
-# Create a FileUpload widget
-file_upload_widget = widgets.FileUpload()
+        # Check if a file is uploaded
+        if uploaded_file:
+            # Read the uploaded file into a Pandas DataFrame
+            content = uploaded_file[list(uploaded_file.keys())[0]]['content']
+            # Update the global df variable
+            self.df = pd.read_excel(io.BytesIO(content))
 
-# Attach the handler function to the upload widget
-file_upload_widget.observe(handle_upload_and_process, names='_counter')
+            # Display information about the uploaded file
+            display_html(f'File "{list(uploaded_file.keys())[0]}" uploaded successfully.', raw=True)
 
-# Display widgets
-display(file_upload_widget)
+    def process_file(self, button):
+        if not self.df.empty:
+            # Display the DataFrame
+            display(self.df)
+        else:
+            print("Please upload a file before processing.")
+
+# Create an instance of FileUploader
+file_uploader = FileUploader()
+
 
 
 
