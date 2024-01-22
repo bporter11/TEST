@@ -241,6 +241,39 @@ process_button.on_click(process_file)
 # Display widgets
 display(file_upload)
 display(process_button)
+------------------------------------------------------------------------------------------------------------------------------------------------
+import pandas as pd
+import ipywidgets as widgets
+from IPython.display import display, display_html
+import io
 
+# Default empty DataFrame
+df = pd.DataFrame()
+
+# Create a function to handle file upload and processing
+def handle_upload_and_process(file_upload):
+    uploaded_file = file_upload.value
+
+    # Check if a file is uploaded
+    if uploaded_file:
+        # Read the uploaded file into a Pandas DataFrame
+        content = uploaded_file[list(uploaded_file.keys())[0]]['content']
+        # Update the global df variable
+        global df
+        df = pd.read_excel(io.BytesIO(content))
+
+        # Display information about the uploaded file
+        display_html(f'File "{list(uploaded_file.keys())[0]}" uploaded successfully.', raw=True)
+
+        # Display the DataFrame
+        display(df)
+    else:
+        print("Please upload a file before processing.")
+
+# Create a FileUpload widget
+file_upload_widget = widgets.FileUpload()
+
+# Use the interact function to create an interactive workflow
+widgets.interact(handle_upload_and_process, file_upload=file_upload_widget)
 
 
