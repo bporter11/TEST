@@ -209,8 +209,8 @@ import io
 # Create a FileUpload widget
 file_upload = widgets.FileUpload()
 
-# Display the widget
-display(file_upload)
+# Create a button for processing the uploaded file
+process_button = widgets.Button(description="Process File")
 
 def handle_upload(change):
     uploaded_file = file_upload.value
@@ -227,6 +227,20 @@ def handle_upload(change):
 
 # Attach the handler function to the upload widget
 file_upload.observe(handle_upload, names='_counter')
+
+def process_file(button):
+    try:
+        # Display the DataFrame
+        display(df)
+    except NameError:
+        print("Please upload a file before processing.")
+
+# Attach the handler function to the process button
+process_button.on_click(process_file)
+
+# Display widgets
+display(file_upload)
+display(process_button)
 
 
 
