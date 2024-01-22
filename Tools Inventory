@@ -251,8 +251,8 @@ import io
 df = pd.DataFrame()
 
 # Create a function to handle file upload and processing
-def handle_upload_and_process(file_upload):
-    uploaded_file = file_upload.value
+def handle_upload_and_process(change):
+    uploaded_file = file_upload_widget.value
 
     # Check if a file is uploaded
     if uploaded_file:
@@ -273,7 +273,11 @@ def handle_upload_and_process(file_upload):
 # Create a FileUpload widget
 file_upload_widget = widgets.FileUpload()
 
-# Use the interact function to create an interactive workflow
-widgets.interact(handle_upload_and_process, file_upload=file_upload_widget)
+# Attach the handler function to the upload widget
+file_upload_widget.observe(handle_upload_and_process, names='_counter')
+
+# Display widgets
+display(file_upload_widget)
+
 
 
