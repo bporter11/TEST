@@ -202,25 +202,29 @@ pip install ipywidgets pandas
 jupyter nbextension enable --py widgetsnbextension
 ------------------------------------------------------------------------------------------------------------------------------------------------
 import pandas as pd
-import fileupload
+import ipywidgets as widgets
+from IPython.display import display
 import io
 
-# Create the upload button
-upload_button = fileupload.FileUpload()
+# Create a FileUpload widget
+file_upload = widgets.FileUpload()
 
-# Display the button
-display(upload_button)
+# Display the widget
+display(file_upload)
 
 def handle_upload(change):
-    uploaded_file = upload_button.data[-1]
+    uploaded_file = file_upload.value
     
-    # Read the uploaded file into a Pandas DataFrame
-    content = uploaded_file['content']
-    df = pd.read_excel(io.BytesIO(content))
-    
-    # Do further processing with the DataFrame (e.g., display it, analyze it, etc.)
-    display(df)
+    # Check if a file is uploaded
+    if uploaded_file:
+        # Read the uploaded file into a Pandas DataFrame
+        content = uploaded_file[list(uploaded_file.keys())[0]]['content']
+        df = pd.read_excel(io.BytesIO(content))
+        
+        # Do further processing with the DataFrame (e.g., display it, analyze it, etc.)
+        display(df)
 
-# Attach the handler function to the upload button
-upload_button.observe(handle_upload, names='_counter')
+# Attach the handler function to the upload widget
+file_upload.observe(handle_upload, names='_counter')
+
 
