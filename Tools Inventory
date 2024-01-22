@@ -145,6 +145,8 @@ merged_df = merged_df.drop(['Description', 'Item Description'], axis=1)
 
 # Resulting DataFrame will have a new column 'Combined Descriptions'
 print(merged_df)
+
+df.rename(columns={'OldColumnName': 'NewColumnName'}, inplace=True)
 ------------------------------------------------------------------------------------------------------------------------------------------------
 
 
