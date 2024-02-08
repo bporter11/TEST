@@ -38,3 +38,7 @@ Hardware development plays a significant role in quantum computing. Various phys
 On the software side, quantum programming languages and libraries, like Qiskit and Cirq, facilitate the design and implementation of quantum algorithms.
 
 Quantum computing holds promise for solving complex problems in cryptography, optimization, material science, and more. However, practical applications are still in their infancy due to current hardware limitations and scalability challenges.
+
+
+
+Quantum algorithms are computational procedures designed to harness the unique properties of quantum mechanics to solve problems more efficiently than classical algorithms.
