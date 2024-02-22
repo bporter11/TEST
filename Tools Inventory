@@ -273,6 +273,33 @@ def process_uploaded_file(change):
 # Attach the handler function to the upload widget
 uploader.observe(process_uploaded_file, names='_counter')
 
+------------------------------------------------------------------------------------------------------------------------------------------------ 02/21/24
+from ipywidgets import FileUpload
+from IPython.display import display
+
+# Create an instance of FileUpload
+uploader = FileUpload(
+    accept='*.csv',  # Accepted file extension, e.g., '.txt', '.pdf', 'image/*', 'image/*,.pdf'
+    multiple=False  # True to accept multiple files upload else False
+)
+
+# Display the file upload widget
+display(uploader)
+
+# Define a function to handle the file upload event
+def handle_file_upload(change):
+    uploaded_filename = next(iter(uploader.value))
+    uploaded_file_path = uploader.value[uploaded_filename]['metadata']['name']
+    
+    # Print the absolute path of the uploaded file
+    print("Absolute path of the uploaded file:", uploaded_file_path)
+
+# Attach the event handler to the file upload widget
+uploader.observe(handle_file_upload, names='_counter')
+
+
+
+
 
 
 
