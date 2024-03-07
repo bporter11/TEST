@@ -14,7 +14,7 @@ In summary, while both Elasticsearch ILM and MongoDB TTL serve the purpose of ma
 
 POSTGRESSQL
 -----------------------------------------------------------------------------------------------
-Geospatial Features
+How can PostgreSQL/GIS & AWS RDS handle temporal features?
 PostgreSQL, with its extension PostGIS, and AWS RDS can handle temporal features in several ways:
 Temporal Tables: PostgreSQL can be extended to become a Temporal Database1. Such databases track the history of database content over time, automatically retaining said history and allowing it to be altered and queried1. This functionality is useful when asking what the database content looked like at any point in time1.
 SQL:2011 Temporal Features: PostgreSQL supports some of the temporal features defined in the SQL:2011 standard2. These features include periods, row versioning, and syntax extensions for SQL commands2. PostgreSQL provides several tools, such as GIST indexes, that are not explicitly related to temporal data but can make the implementation of temporal data efficient3.
