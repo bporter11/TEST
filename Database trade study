@@ -1,0 +1,13 @@
+Elasticsearch Index Lifecycle Management (ILM):
+
+ILM is a feature of Elasticsearch used for managing the lifecycle of indices.
+It allows you to automate operations like rollover, delete, and shrink based on criteria like age, size, and document count.
+With ILM policies, you can define actions to be taken on indices as they meet certain conditions, such as transitioning from hot/warm to cold storage, or deleting old indices to manage disk space.
+ILM provides more flexibility and control over the entire index lifecycle process in Elasticsearch.
+MongoDB Time-To-Live (TTL):
+
+TTL is a feature of MongoDB used for automatically removing documents from a collection after a certain amount of time has passed since the document's creation.
+It is defined at the collection level and requires a TTL index on the field that holds the expiration time.
+TTL is useful for scenarios where data has a finite lifespan and needs to be automatically purged after a certain period, such as session data, logs, or temporary cache.
+MongoDB's TTL feature is simpler compared to Elasticsearch ILM and focuses specifically on document expiration based on time.
+In summary, while both Elasticsearch ILM and MongoDB TTL serve the purpose of managing data lifecycle, ILM is more comprehensive and flexible, handling index lifecycle management in Elasticsearch, whereas TTL in MongoDB is a simpler feature focused on automatically expiring documents based on a specified time.
