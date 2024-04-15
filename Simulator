@@ -10,3 +10,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
           .and().csrf().disable(); // Disable CSRF protection as needed
     }
 }
+
+JAVADOCS
+--------------------------------------------------------------------
+apply(String input)
+/**
+ * Applies the given string input to create a {@link Filter} object expressed in OGC (Open Geospatial Consortium) filter syntax.
+ * The method parses the input string and constructs a filter according to the OGC standards, which can be used to specify criteria for data selection.
+ *
+ * @param input The input string representing filter criteria in OGC filter syntax.
+ * @return A {@link Filter} object representing the parsed criteria from the input string.
+ * @throws IllegalArgumentException if the input string is not a valid OGC filter syntax or cannot be parsed.
+ */
