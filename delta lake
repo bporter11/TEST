@@ -35,3 +35,11 @@ public class MinioSparkConnector {
     <artifactId>aws-java-sdk-bundle</artifactId>
     <version>1.11.534</version>
 </dependency>
+
+
+
+spark-submit \
+  --class MinioSparkConnector \
+  --master local[*] \
+  --jars /Home/hadoop-aws-3.4.0.jar,/path/to/aws-java-sdk-bundle-1.12.723.jar \
+  target/your-app-1.0-SNAPSHOT.jar
