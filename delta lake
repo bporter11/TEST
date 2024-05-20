@@ -43,3 +43,45 @@ spark-submit \
   --master local[*] \
   --packages org.apache.hadoop:hadoop-aws:3.4.0,com.amazonaws:aws-java-sdk-bundle:1.12.723 \
   target/your-app-1.0-SNAPSHOT.jar
+
+import org.apache.spark.sql.Dataset;
+import org.apache.spark.sql.Row;
+import org.apache.spark.sql.SparkSession;
+import io.delta.tables.DeltaTable;
+import static org.apache.spark.sql.functions.*;
+
+public class ParquetToDelta {
+    public static void main(String[] args) {
+        // Check for input and output paths
+        if (args.length < 2) {
+            System.err.println("Usage: ParquetToDelta <input-path> <output-path>");
+            System.exit(1);
+        }
+
+        String parquetInputPath = args[0];
+        String deltaOutputPath = args[1];
+
+        // Create Spark session with Delta support
+        SparkSession spark = SparkSession.builder()
+                .appName("ParquetToDelta")
+                .config("spark.sql.extensions", "io.delta.sql.DeltaSparkSessionExtension")
+                .config("spark.sql.catalog.spark_catalog", "org.apache.spark.sql.delta.catalog.DeltaCatalog")
+                .getOrCreate();
+
+        // Read the Parquet file into a DataFrame
+        Dataset<Row> parquetDF = spark.read().parquet(parquetInputPath);
+
+        // Write the DataFrame to a Delta table
+        parquetDF.write().format("delta").save(deltaOutputPath);
+
+        // Optionally, you can create a Delta table from the path
+        DeltaTable deltaTable = DeltaTable.forPath(spark, deltaOutputPath);
+
+        // Print schema of Delta table
+        deltaTable.toDF().printSchema();
+
+        // Stop Spark session
+        spark.stop();
+    }
+}
+
