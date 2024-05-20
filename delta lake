@@ -1,0 +1,37 @@
+import org.apache.spark.SparkConf;
+import org.apache.spark.sql.SparkSession;
+
+public class MinioSparkConnector {
+    public static void main(String[] args) {
+        SparkConf sparkConf = new SparkConf()
+            .setAppName("MinioSparkConnector")
+            .setMaster("local[*]")
+            .set("spark.hadoop.fs.s3a.endpoint", "http://localhost:9000")
+            .set("spark.hadoop.fs.s3a.access.key", "sparkaccesskey")
+            .set("spark.hadoop.fs.s3a.secret.key", "sparksupersecretkey")
+            .set("spark.hadoop.fs.s3a.path.style.access", "true")
+            .set("spark.hadoop.fs.s3a.connection.ssl.enabled", "false");
+
+        SparkSession spark = SparkSession.builder()
+            .config(sparkConf)
+            .getOrCreate();
+
+        // Your Spark code to read/write from/to Minio
+        // Example: Reading a file from Minio
+        spark.read().text("s3a://test/your-file.txt").show();
+
+        spark.stop();
+    }
+}
+
+
+<dependency>
+    <groupId>org.apache.hadoop</groupId>
+    <artifactId>hadoop-aws</artifactId>
+    <version>3.2.0</version>
+</dependency>
+<dependency>
+    <groupId>com.amazonaws</groupId>
+    <artifactId>aws-java-sdk-bundle</artifactId>
+    <version>1.11.534</version>
+</dependency>
