@@ -1,0 +1,17 @@
+import subprocess
+
+# Define the commands to start Kafka Zookeeper and Kafka server properties
+zookeeper_command = ['path/to/zookeeper/bin/zookeeper-server-start.sh', 'path/to/zookeeper/config/zookeeper.properties']
+kafka_command = ['path/to/kafka/bin/kafka-server-start.sh', 'path/to/kafka/config/server.properties']
+
+# Start Zookeeper
+zookeeper_process = subprocess.Popen(zookeeper_command)
+print("Started Zookeeper with PID:", zookeeper_process.pid)
+
+# Start Kafka server
+kafka_process = subprocess.Popen(kafka_command)
+print("Started Kafka server with PID:", kafka_process.pid)
+
+# Optionally, wait for the processes to complete
+zookeeper_process.wait()
+kafka_process.wait()
